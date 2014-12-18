@@ -6,17 +6,28 @@ public class VKTest : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		var vk = new VK();
-		vk.DoLogIn((success) => {
-			Debug.LogWarning("====================> VK.Login: "+success);
-			vk.SendToWall("Testing mobile app", true, success => {
-				Debug.LogWarning("====================> VK.SendToWall: "+success);
-			});
-			vk.GetShortFriendList((success, friends) => {
-				Debug.LogWarning("====================> VK.GetShortFriendList: "+success);
-				foreach (var fr in friends) {
-					Debug.LogWarning("FriendID: "+fr.id);
-				}
-			});
+		/*
+		string data = "" +
+			"{\"response\":{\"count\":103,\"items\":[9942899,12902483,75334099,192528,22369413,6775719,12706737,6155619,4432284,355358,98679916,154187478,266417848,9154318,122130877,93454848,463897,31242453,116369290,8263566,1688087,16725465,2268730,5500129,6328868,21102453,49846973,18441298,21797287,30211521,4195380,431188,10166912,12536599,1513665,50524012,2419570,24477517,106732852,5590642,115472802,10020691,565852,33586925,3723820,216822197,795150,1217893,1864327,2282498,4504596,4667984,4800098,5240342,5332964,6177608,6810594,6826797,11456472,11516336,11910293,12912522,13186453,13505307,13531761,16139012,16868053,17819110,21332751,22362278,23197808,24984763,39492718,42457047,56016303,58608660,64822990,73603643,119419700,153575419,181333705,185720047,200209780,133366415,19609215,29142564,182668879,5675878,5727738,6147130,6351506,8192451,8499689,35381128,47779979,56510169,61716100,67332198,69431747,112763313,136204575,156657887,173583682]}}"
+				;
+
+		var a = vk.parseFriendsShortly(data);
+
+		return;
+		*/
+		vk.DoLogIn((successAuth) => {
+			Debug.LogWarning("====================> VK.Login: "+successAuth);
+			if (successAuth) {
+				vk.SendToWall("Testing mobile app", true, success => {
+					Debug.LogWarning("====================> VK.SendToWall: "+success);
+				});
+				vk.GetShortFriendList((success, friends) => {
+					Debug.LogWarning("====================> VK.GetShortFriendList: "+success);
+					foreach (var fr in friends) {
+						Debug.LogWarning("FriendID: "+fr.id);
+					}
+				});
+			}
 		});
 	}
 

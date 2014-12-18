@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System;
+//using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -11,15 +11,15 @@ public class VK {
 			male,// = 2,
 			unknown// = 0
 		};
-		public string id;
-		public string first_name;
-		public string last_name;
-		public string deactivated;
+		public string id = "";
+		public string first_name = "";
+		public string last_name = "";
+		public string deactivated = "";
 		public bool isDeactivated {
 			get { return deactivated.Equals("deleted") || deactivated.Equals("banned"); }
 		}
-		public string photo_id;
-		public string sex;
+		public string photo_id = "";
+		public string sex = "";
 		public SEX Sex {
 			get { 
 				if (sex.Equals("1"))
@@ -29,13 +29,13 @@ public class VK {
 				else return SEX.unknown;
 			}
 		}
-		public string photo_100;
-		public string photo_200;
-		public string online;
+		public string photo_100 = "";
+		public string photo_200 = "";
+		public string online = "";
 		public bool isOnline {
 			get { return online.Equals("1"); }
 		}
-		public string online_mobile;
+		public string online_mobile = "";
 		public bool isOnlineMobile {
 			get { return online_mobile.Equals("1"); }
 		}
@@ -120,7 +120,7 @@ public class VK {
 	}
 
 	//---------------------------------------------------
-	private List<Friend> parseFriendsShortly(string data) {
+	public List<Friend> parseFriendsShortly(string data) {
 		List<Friend> res = new List<Friend>();
 
 		/* EXAMPLE:
@@ -136,10 +136,10 @@ public class VK {
 		if (resp.ContainsKey("response")) {
 			var respData = resp["response"] as Hashtable;
 			if (respData.ContainsKey("items")) {
-				var items = respData["items"] as Array;
+				var items = respData["items"] as ArrayList;
 				foreach (var currId in items) {
 					res.Add(new Friend() {
-						id = currId.ToString()
+						id = ""+currId
 					});
 				}
 			}
@@ -150,6 +150,7 @@ public class VK {
 	}
 
 	private List<Friend> parseFriendsFully(string data) {
+		//NB! NOT TESTED
 		List<Friend> res = new List<Friend>();
 		//TODO: implement it
 
@@ -189,14 +190,14 @@ public class VK {
 		if (resp.ContainsKey("response")) {
 			var respData = resp["response"] as Hashtable;
 			if (respData.ContainsKey("items")) {
-				var items = respData["items"] as Array;
+				var items = respData["items"] as ArrayList;
 				foreach (var itemData in items) {
 					var item = itemData as Hashtable;
 					var friend = new Friend();
 					foreach (var field in fields) {
 						var property = properties.Find(p => { return p.Name.Equals(field); });
 						if (item.ContainsKey(field) && property != null) {
-							property.SetValue(friend, item[field].ToString(), null);
+							property.SetValue(friend, ""+item[field], null);
 						}
 					}
 				}
