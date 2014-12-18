@@ -42,6 +42,13 @@ public class UnitySendMessageDispatcher
 public class WebViewObject : MonoBehaviour
 {
 	Callback callback;
+
+	public delegate void OnRedirectingToEventHandler(string url);
+	public event OnRedirectingToEventHandler OnRedirectingToEvent;
+
+	public delegate void OnLoadUrlHandler(string content);
+	public event OnLoadUrlHandler OnLoadUrlEvent;
+
 #if UNITY_EDITOR || UNITY_STANDALONE_OSX
 	IntPtr webView;
 	bool visibility;
@@ -210,17 +217,23 @@ public class WebViewObject : MonoBehaviour
 
 	public void CallFromJS(string message)
 	{
-//		if (callback != null)
-//			callback(message);
-	}
-	
-	
-	
-	void onGetAccessToken (string access_token)
-	{
-		Debug.Log ("Unity > onGetAccessToken " + access_token);
+		Debug.LogError("CallFromJS: "+message);
 		if (callback != null)
-			callback(access_token);
+			callback(message);
+	}
+
+	public void RedirectedTo(string url) {
+		Debug.LogError("RedirectedTo: "+url);
+		if (OnRedirectingToEvent != null) {
+			OnRedirectingToEvent(url);
+		}
+	}
+
+	public void LoadedUrl(string content) {
+		Debug.LogError("LoadedURL:  >>  "+content);
+		if (OnLoadUrlEvent != null) {
+			OnLoadUrlEvent(content);
+		}
 	}
 
 #if UNITY_EDITOR || UNITY_STANDALONE_OSX
